@@ -14,9 +14,10 @@ jobs:
         include:
           - arch: aarch64
             distro: ubuntu_latest
+            image: "ubuntu:latest"
           - arch: none
             distro: none
-            base_image: "ubuntu:latest"
+            image: "ubuntu:latest"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/checkout@v3
@@ -28,6 +29,7 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
+          base_image: ${{ matrix.image }}
           setup: mkdir -p artifacts
           dockerRunArgs: --volume "${PWD}/artifacts:/artifacts"
           run: |
