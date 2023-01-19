@@ -14,8 +14,10 @@ jobs:
         with:
           repository: influxdata/telegraf
           fetch-depth: 1
+          path: telegraf
       - uses: actions/setup-go@v3
         with:
           go-version: stable
+      - run: ls -lh
       - run: bash build.sh telegraf custom-tags.txt
       - run: ls -lh telegraf/telegraf
