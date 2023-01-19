@@ -8,16 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build on ${{ matrix.distro }} ${{ matrix.arch }}
-    strategy:
-      matrix:
-        include:
-          - arch: aarch64
-            distro: ubuntu_latest
-            image: "ubuntu:latest"
-          - arch: none
-            distro: none
-            image: "ubuntu:latest"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/checkout@v3
@@ -25,14 +15,8 @@ jobs:
           repository: influxdata/telegraf
           fetch-depth: 1
           path: telegraf
-      - uses: uraimo/run-on-arch-action@v2
+      - uses: actions/setup-go@v3
         with:
-          arch: ${{ matrix.arch }}
-          distro: ${{ matrix.distro }}
-          base_image: ${{ matrix.image }}
-          env: "ARCH: ${{ matrix.arch }}"
-          run: |
-            uname -rm
-            env
-            pwd
-            ls -lh
+          go-version: stable
+      - run: bash build.sh telegraf custom-tags.txt
+      - run: ls -lh telegraf/telegraf.*
