@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: influxdata/telegraf
+          fetch-depth: 1
       - uses: actions/setup-go@v3
         with:
           go-version: stable
-      - run: go version
+      - run: bash build.sh telegraf custom-tags.txt
+      - run: ls -lh telegraf/telegraf
