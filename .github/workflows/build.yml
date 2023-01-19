@@ -1,9 +1,5 @@
 name: build
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
 jobs:
   build:
@@ -18,5 +14,17 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: stable
-      - run: bash build.sh telegraf custom-tags.txt
-      - run: ls -lh telegraf/telegraf.*
+      - id: build
+        run: |
+          echo "version=$(cat telegraf/build_version.txt)+$(git rev-parse --short HEAD)" >> ${GITHUB_OUTPUT}
+          bash build.sh telegraf custom-tags.txt
+          echo "status=success" >> ${GITHUB_OUTPUT}
+      - uses: ncipollo/release-action@main
+        if: ${{ steps.build.outputs.status }} == 'success' && !cancelled()
+        with:
+          tag: ${{ steps.build.outputs.version }}
+          artifacts: "telegraf/telegraf.*"
+          artifactErrorsFailBuild: true
+          allowUpdates: true
+          draft: true
+          removeArtifacts: true
