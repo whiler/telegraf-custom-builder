@@ -34,5 +34,5 @@ jobs:
             pwd >> /artifacts/env
             ls -lh >> /artifacts/env
       - run: |
-        ls -lh artifacts
-        cat artifacts/env
+          ls -lh artifacts
+          cat artifacts/env
