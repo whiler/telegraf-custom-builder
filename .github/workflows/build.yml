@@ -30,12 +30,9 @@ jobs:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
           base_image: ${{ matrix.image }}
-          setup: mkdir -p artifacts
-          dockerRunArgs: --volume "${PWD}/artifacts:/artifacts"
+          env: "ARCH: ${{ matrix.arch }}"
           run: |
-            uname -rm >> /artifacts/env
-            pwd >> /artifacts/env
-            ls -lh >> /artifacts/env
-      - run: |
-          ls -lh artifacts
-          cat artifacts/env
+            uname -rm
+            env
+            pwd
+            ls -lh
