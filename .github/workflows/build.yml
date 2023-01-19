@@ -16,7 +16,7 @@ jobs:
             distro: ubuntu_latest
           - arch: none
             distro: none
-            base_image: ubuntu
+            base_image: "ubuntu:latest"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/checkout@v3
